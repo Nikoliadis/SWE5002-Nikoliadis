@@ -14,7 +14,6 @@ It handles landing, takeoff, and emergency landing requests from flights and pro
 
 ## Technologies Used
 
-- Python 3.x
 - `collections.deque` for queue implementation
 - `random` and `time` modules for simulation purposes
 
