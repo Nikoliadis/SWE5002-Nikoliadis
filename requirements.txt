@@ -1,0 +1,5 @@
+# No external libraries are required.
+# The project uses only built-in Python modules:
+# - random
+# - time
+# - collections
