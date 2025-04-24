@@ -53,9 +53,9 @@ class AirportManager:
 
     def print_summary(self):
         print("\n--- Simulation Summary ---")
-        print(f"🛬 Normal landings: {self.landing_count}")
-        print(f"⚠️ Emergency landings: {self.emergency_count}")
-        print(f"🛫 Takeoffs: {self.takeoff_count}")
+        print(f"Normal landings: {self.landing_count}")
+        print(f"Emergency landings: {self.emergency_count}")
+        print(f"Takeoffs: {self.takeoff_count}")
         print("--------------------------")
 
 def run_simulation():
