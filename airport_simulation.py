@@ -1,11 +1,10 @@
 import random
 import time
-from collections import deque
 
 class FlightRequest:
     def __init__(self, flight_number, action_type, emergency_reason=None):
         self.flight_number = flight_number
-        self.action_type = action_type  # "landing", "takeoff", or "emergency"
+        self.action_type = action_type
         self.emergency_reason = emergency_reason
 
     def __str__(self):
@@ -13,49 +12,66 @@ class FlightRequest:
             return f"Flight {self.flight_number} requests {self.action_type} (EMERGENCY: {self.emergency_reason})"
         return f"Flight {self.flight_number} is requesting {self.action_type}"
 
+class CustomQueue:
+    def __init__(self):
+        self.items = []
+
+    def enqueue(self, item):
+        self.items.append(item)
+
+    def dequeue(self):
+        if not self.is_empty():
+            return self.items.pop(0)
+        return None
+
+    def is_empty(self):
+        return len(self.items) == 0
+
+    def insert_high_priority(self, item):
+        self.items.insert(0, item)
+
 class AirportManager:
     def __init__(self, airport_name):
         self.airport_name = airport_name
-        self.queue_landing = deque()
-        self.queue_takeoff = deque()
-        self.queue_emergency = deque()
+        self.queue_landing = CustomQueue()
+        self.queue_takeoff = CustomQueue()
+        self.queue_emergency = CustomQueue()
 
-        # Stats
         self.landing_count = 0
         self.takeoff_count = 0
         self.emergency_count = 0
 
     def register_request(self, request: FlightRequest):
         if request.emergency_reason:
-            self.queue_emergency.appendleft(request)
+            self.queue_emergency.insert_high_priority(request)
         elif request.action_type == "landing":
-            self.queue_landing.append(request)
+            self.queue_landing.enqueue(request)
         elif request.action_type == "takeoff":
-            self.queue_takeoff.append(request)
+            self.queue_takeoff.enqueue(request)
         print(request)
 
     def handle_next_action(self):
-        if self.queue_emergency:
-            current = self.queue_emergency.popleft()
+        if not self.queue_emergency.is_empty():
+            current = self.queue_emergency.dequeue()
             print(f"CONTROL: {current.flight_number} is cleared for EMERGENCY LANDING due to: {current.emergency_reason}")
             self.emergency_count += 1
-        elif self.queue_landing:
-            current = self.queue_landing.popleft()
+        elif not self.queue_landing.is_empty():
+            current = self.queue_landing.dequeue()
             print(f"CONTROL: {current.flight_number} is cleared to land")
             self.landing_count += 1
-        elif self.queue_takeoff:
-            current = self.queue_takeoff.popleft()
+        elif not self.queue_takeoff.is_empty():
+            current = self.queue_takeoff.dequeue()
             print(f"CONTROL: {current.flight_number} is cleared for takeoff")
             self.takeoff_count += 1
 
     def has_pending_requests(self):
-        return any([self.queue_emergency, self.queue_landing, self.queue_takeoff])
+        return not (self.queue_emergency.is_empty() and self.queue_landing.is_empty() and self.queue_takeoff.is_empty())
 
     def print_summary(self):
         print("\n--- Simulation Summary ---")
-        print(f"Normal landings: {self.landing_count}")
-        print(f"Emergency landings: {self.emergency_count}")
-        print(f"Takeoffs: {self.takeoff_count}")
+        print(f" Normal landings: {self.landing_count}")
+        print(f" Emergency landings: {self.emergency_count}")
+        print(f" Takeoffs: {self.takeoff_count}")
         print("--------------------------")
 
 def run_simulation():
