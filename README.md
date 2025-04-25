@@ -1,28 +1,18 @@
-# Airport Simulation
+# Airport Simulation (Custom Data Structures)
 
-This project simulates the air traffic control system of a small airport using Python.  
-It handles landing, takeoff, and emergency landing requests from flights and processes them based on priority.
+This is a Python simulation of a small airport's control system, using **custom-built queues** instead of built-in Python structures.
 
-## Features
-
-- Separate queues for:
-  - Regular landings (FIFO)
-  - Takeoffs (FIFO)
-  - Emergency landings (highest priority)
-- Random generation of flight requests
-- Real-time simulation with print outputs that reflect the control tower decisions
-
-## Technologies Used
-
-- Python 3.x
-- `collections.deque` for queue implementation
-- `random` and `time` modules for simulation purposes
+## Description
+- Handles flight requests:
+  - Normal landings
+  - Takeoffs
+  - Emergency landings (due to low fuel or technical malfunction)
+- Requests are processed in priority:
+  1. Emergency landings
+  2. Normal landings
+  3. Takeoffs
+- Summary of all actions is printed at the end
 
 ## How to Run
-
-1. Open terminal or command prompt.
-2. Navigate to the project directory.
-3. Run the script:
-
 ```bash
 python airport_simulation.py
