@@ -14,5 +14,10 @@ This is a Python simulation of a small airport's control system, using **custom-
 - Summary of all actions is printed at the end
 
 ## How to Run
+
+1. Open terminal or command prompt.
+2. Navigate to the project directory.
+3. Run the script:
+
 ```bash
 python airport_simulation.py
